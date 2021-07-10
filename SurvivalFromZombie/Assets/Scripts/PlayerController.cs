@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
             Jump();
+            
         }
     }
 
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isJumping = false;
         }

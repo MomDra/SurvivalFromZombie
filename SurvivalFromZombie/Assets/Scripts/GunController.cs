@@ -19,8 +19,8 @@ public class GunController : MonoBehaviour
     bool isloading;
 
     AudioSource audioSource;
-    [SerializeField]
-    ParticleSystem fireParticle;
+    [SerializeField] ParticleSystem fireParticle;
+    
 
     private void Start()
     {
@@ -64,6 +64,7 @@ public class GunController : MonoBehaviour
         StartCoroutine(Recoil());
         fireParticle.Play();
         currentBulletCount--;
+        BulletManager.instance.Fire();
         Debug.Log("น฿ป็!");
     }
 
