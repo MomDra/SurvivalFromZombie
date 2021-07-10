@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    float moveSpeed;
-    [SerializeField]
-    float runSpeed;
-    [SerializeField]
-    float jumpPower;
-    [SerializeField]
-    float rotateSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float runSpeed;
+    [SerializeField] float jumpPower;
+    [SerializeField] float rotateSpeed;
 
     float horizontal;
     float vertical;
     float mouseX;
+    
     bool isJumping;
+    bool isRunning;
 
     Rigidbody rigid;
 
@@ -31,7 +29,15 @@ public class PlayerController : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
         mouseX = Input.GetAxis("Mouse X");
 
-        Move();
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Run();
+        }
+        else
+        {
+            Move();
+        }
+        
         Rotate();
 
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -42,7 +48,14 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        transform.Translate(new Vector3(horizontal, 0, vertical).normalized * moveSpeed * Time.deltaTime);
+        if (isRunning) isRunning = false;
+        transform.Translate(new Vector3(horizontal, 0, vertical).normalized * walkSpeed * Time.deltaTime);
+    }
+
+    void Run()
+    {
+        if (!isRunning) isRunning = true;
+        transform.Translate(new Vector3(horizontal, 0, vertical).normalized * runSpeed * Time.deltaTime);
     }
 
     void Rotate()
