@@ -19,12 +19,15 @@ public class GunController : MonoBehaviour
     bool isloading;
 
     AudioSource audioSource;
+    Animator anim;
     [SerializeField] ParticleSystem fireParticle;
+    [SerializeField] PlayerController playerController;
     
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
         isReady = true;
         isloading = false;
     }
@@ -66,6 +69,8 @@ public class GunController : MonoBehaviour
         currentBulletCount--;
         BulletManager.instance.Fire();
         Debug.Log("น฿ป็!");
+
+        playerController.Walk();
     }
 
     IEnumerator FireReady()
@@ -78,6 +83,8 @@ public class GunController : MonoBehaviour
     {
         isloading = true;
         StartCoroutine(ReloadReady());
+
+        anim.SetTrigger("Reload");
 
         bulletInBagCount += currentBulletCount;
         if(bulletInBagCount >= maxBulletCount)

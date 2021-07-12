@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
+    float applySpeed;
     [SerializeField] float jumpPower;
     [SerializeField] float rotateSpeed;
 
@@ -15,48 +16,81 @@ public class PlayerController : MonoBehaviour
     
     bool isJumping;
     bool isRunning;
+    bool isWalking;
 
     Rigidbody rigid;
+    [SerializeField] Animator gunAnim;
+
+    Vector3 lastPos;
 
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
+        applySpeed = walkSpeed;
     }
 
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-        mouseX = Input.GetAxis("Mouse X");
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        mouseX = Input.GetAxisRaw("Mouse X");
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Run();
         }
-        else
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            Move();
+            Walk();
         }
-        
+
         Rotate();
 
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
             Jump();
-            
         }
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        MoveCheck();
     }
 
     void Move()
     {
-        if (isRunning) isRunning = false;
-        transform.Translate(new Vector3(horizontal, 0, vertical).normalized * walkSpeed * Time.deltaTime);
+        Vector3 moveHorizontal = transform.right * horizontal;
+        Vector3 moveVertical = transform.forward * vertical;
+        Vector3 dirVec = (moveHorizontal + moveVertical).normalized * applySpeed;
+
+        rigid.MovePosition(rigid.position + dirVec * Time.deltaTime);
+    }
+
+    public void Walk()
+    {
+        isRunning = false;
+        applySpeed = walkSpeed;
+        gunAnim.SetBool("isRunning", isRunning);
     }
 
     void Run()
     {
-        if (!isRunning) isRunning = true;
-        transform.Translate(new Vector3(horizontal, 0, vertical).normalized * runSpeed * Time.deltaTime);
+        isRunning = true;
+        applySpeed = runSpeed;
+        gunAnim.SetBool("isRunning", isRunning);
+    }
+
+    void MoveCheck()
+    {
+        if (Vector3.Distance(lastPos, rigid.position) <= 0.01f)
+            isWalking = false;
+        else
+            isWalking = true;
+
+        gunAnim.SetBool("isWalking", isWalking);
+
+        lastPos = rigid.position;
     }
 
     void Rotate()
