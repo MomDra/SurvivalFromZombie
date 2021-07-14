@@ -18,6 +18,7 @@ public class Zombie : MonoBehaviour
     NavMeshAgent agent;
     Animator anim;
     Image hpBar;
+    ParticleSystem particle;
     
 
     void Start()
@@ -25,6 +26,7 @@ public class Zombie : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         hpBar = GetComponentInChildren<Image>();
+        particle = GetComponentInChildren<ParticleSystem>();
 
         anim.SetFloat("MoveSpeed", 1);
 
@@ -57,6 +59,8 @@ public class Zombie : MonoBehaviour
         }
 
         hpBar.fillAmount = (float)currHp / maxHp;
+
+        particle.Play();
     }
 
     IEnumerator IncreaseSpeed()
