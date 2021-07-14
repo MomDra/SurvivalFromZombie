@@ -28,7 +28,7 @@ public class BulletManager : MonoBehaviour
         bullets = new GameObject[bulletCount];
         for (int i = 0; i < bulletCount; i++)
         {
-            bullets[i] = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            bullets[i] = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.Euler(90f, 0f, 0f));
             bullets[i].SetActive(false);
         }
     }

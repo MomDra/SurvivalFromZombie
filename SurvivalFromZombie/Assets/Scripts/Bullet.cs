@@ -22,11 +22,40 @@ public class Bullet : MonoBehaviour
         rigid.AddForce(mainCamera.transform.forward * power, ForceMode.Impulse);
     }
 
+    private void FixedUpdate()
+    {
+        //.Log(rigid.velocity.magnitude);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == 9)
+        {
+            Debug.Log("몸통에 맞음");
+        }
+        else if(other.gameObject.layer == 8)
+        {
+            Debug.Log("머리에 맞음");
+        }
+
+        gameObject.SetActive(false);
+    }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    { 
+        Debug.Log(collision.gameObject.name + "맞았어용!!");
+
+        if (collision.gameObject.layer == 8)
+        {
+            Debug.Log("머리에 맞았음");
+            collision.gameObject.GetComponentInParent<Zombie>().DecreaseHp(10);
+        }
+        else if(collision.gameObject.layer == 9)
+        {
+            Debug.Log("몸통에 맞았음");
+            collision.gameObject.GetComponent<Zombie>().DecreaseHp(5);
+        }
+
         gameObject.SetActive(false);
-        Debug.Log("충돌함");
     }
 }
-
