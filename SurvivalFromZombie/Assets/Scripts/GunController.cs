@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class GunController : MonoBehaviour
     Animator anim;
     [SerializeField] ParticleSystem fireParticle;
     [SerializeField] PlayerController playerController;
+
+    [SerializeField] Text currentBullet;
+    [SerializeField] Text maxBullet;
     
 
     private void Start()
@@ -30,6 +34,9 @@ public class GunController : MonoBehaviour
         anim = GetComponent<Animator>();
         isReady = true;
         isloading = false;
+
+        currentBullet.text = currentBulletCount.ToString();
+        maxBullet.text = bulletInBagCount.ToString();
     }
 
     private void Update()
@@ -71,6 +78,8 @@ public class GunController : MonoBehaviour
         Debug.Log("น฿ป็!");
 
         playerController.Walk();
+
+        currentBullet.text = currentBulletCount.ToString();
     }
 
     IEnumerator FireReady()
@@ -97,6 +106,9 @@ public class GunController : MonoBehaviour
             currentBulletCount = bulletInBagCount;
             bulletInBagCount = 0;
         }
+
+        currentBullet.text = currentBulletCount.ToString();
+        maxBullet.text = bulletInBagCount.ToString();
     }
 
     IEnumerator ReloadReady()

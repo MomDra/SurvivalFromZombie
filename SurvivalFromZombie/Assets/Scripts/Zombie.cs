@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Zombie : MonoBehaviour
 {
-
-    [SerializeField] int hp;
-
-    [SerializeField] Rigidbody playerPos;
+    [SerializeField] int maxHp;
+    int currHp;
+    [SerializeField] Rigidbody playerRigid;
 
     float originSpeed;
     float hitSpeed = 1.5f;
@@ -17,29 +17,26 @@ public class Zombie : MonoBehaviour
 
     NavMeshAgent agent;
     Animator anim;
+    Image hpBar;
+    
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        hpBar = GetComponentInChildren<Image>();
 
         anim.SetFloat("MoveSpeed", 1);
 
         originSpeed = agent.speed;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currHp = maxHp;
     }
 
     private void FixedUpdate()
     {
         if (!isDead)
         {
-            agent.destination = playerPos.position;
+            agent.destination = playerRigid.position;
         }
     }
 
@@ -49,15 +46,17 @@ public class Zombie : MonoBehaviour
         agent.speed = hitSpeed;
         StartCoroutine(IncreaseSpeed());
 
-        if (hp - dmg <= 0)
+        if (currHp - dmg <= 0)
         {
-            hp = 0;
+            currHp = 0;
             Die();
         }
         else
         {
-            hp -= dmg;
+            currHp -= dmg;
         }
+
+        hpBar.fillAmount = (float)currHp / maxHp;
     }
 
     IEnumerator IncreaseSpeed()
@@ -71,5 +70,6 @@ public class Zombie : MonoBehaviour
     {
         isDead = true;
         anim.SetTrigger("Dead");
+        agent.destination = transform.position;
     }
 }
