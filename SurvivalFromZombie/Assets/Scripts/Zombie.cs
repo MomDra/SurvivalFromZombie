@@ -10,10 +10,14 @@ public class Zombie : MonoBehaviour
     int currHp;
     [SerializeField] Rigidbody playerRigid;
 
+    [SerializeField] float attackRange = 1.5f;
+    [SerializeField] float attackDelay = 2f;
+
     float originSpeed;
-    float hitSpeed = 1.5f;
+    float slowSpeed = 1.5f;
 
     bool isDead;
+    bool canAttack = true;
 
     NavMeshAgent agent;
     Animator anim;
@@ -39,13 +43,19 @@ public class Zombie : MonoBehaviour
         if (!isDead)
         {
             agent.destination = playerRigid.position;
+
+
+            if (DetectPlayer() && canAttack)
+            {
+                Attack();
+            }
         }
     }
 
     public void DecreaseHp(int dmg)
     {
         Debug.Log(dmg.ToString() + "데미지 입힘");
-        agent.speed = hitSpeed;
+        agent.speed = slowSpeed;
         StartCoroutine(IncreaseSpeed());
 
         if (currHp - dmg <= 0)
@@ -75,5 +85,32 @@ public class Zombie : MonoBehaviour
         isDead = true;
         anim.SetTrigger("Dead");
         agent.destination = transform.position;
+    }
+
+    bool DetectPlayer()
+    {
+        if(Vector3.Distance(transform.position, playerRigid.position) <= attackRange)
+        {
+            Debug.Log("플레이어가 근처에 있음");
+            return true;
+        }
+
+        return false;
+    }
+
+    void Attack()
+    {
+        canAttack = false;
+        agent.speed = 0;
+        StartCoroutine(ResetAttack());
+        anim.SetTrigger("Attack");
+    }
+
+    IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(attackDelay / 2);
+        agent.speed = originSpeed;
+        yield return new WaitForSeconds(attackDelay / 2);
+        canAttack = true;
     }
 }

@@ -40,7 +40,6 @@ public class BulletManager : MonoBehaviour
 
         bullet.SetActive(true);
         bullet.transform.position = mainCamera.transform.position;
-        bullet.transform.rotation = mainCamera.transform.rotation;
         bullet.GetComponent<Bullet>().Fire();
 
         currBullet++;

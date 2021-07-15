@@ -60,7 +60,7 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && !isloading)
+        if (Input.GetKeyDown(KeyCode.R) && !isloading && currentBulletCount != maxBulletCount)
         {
             Reload();
         }
@@ -132,5 +132,11 @@ public class GunController : MonoBehaviour
             yield return new WaitForEndOfFrame();
             transform.localPosition = new Vector3(0, 0, k);
         }
+    }
+
+    public void IncreaseBullet(int num)
+    {
+        bulletInBagCount += num;
+        maxBullet.text = bulletInBagCount.ToString();
     }
 }
