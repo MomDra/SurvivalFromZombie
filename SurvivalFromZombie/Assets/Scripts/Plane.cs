@@ -15,13 +15,12 @@ public class Plane : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
-
         int x = Random.Range(-mapX + 5, mapX - 5);
         int z = Random.Range(-mapZ + 5, mapZ - 5);
 
         randomPos = new Vector3(x, transform.position.y, z);
 
-        transform.position = new Vector3(x, transform.position.y, -70);
+        transform.position = new Vector3(x, transform.position.y, -mapZ - 20);
     }
     
     private void FixedUpdate()
@@ -31,6 +30,11 @@ public class Plane : MonoBehaviour
         if(Vector3.Distance(rigid.position, randomPos) <= 0.001f)
         {
             Instantiate(boxPrefab, randomPos - Vector3.down * 3, Quaternion.identity);
+        }
+
+        if(rigid.position.z >= 80)
+        {
+            Destroy(gameObject);
         }
     }
 }

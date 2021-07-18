@@ -14,7 +14,7 @@ public class Zombie : MonoBehaviour
     [SerializeField] float attackDelay = 2f;
 
     float originSpeed;
-    float slowSpeed = 1.5f;
+    float slowSpeed = 1f;
 
     bool isDead;
     bool canAttack = true;

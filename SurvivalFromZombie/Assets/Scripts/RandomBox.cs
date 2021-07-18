@@ -22,11 +22,7 @@ public class RandomBox : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            rigid.velocity = Vector3.zero;
-        }
-        else if (collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 7)
         {
             // 체력 회복 코드
 

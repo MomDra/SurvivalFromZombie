@@ -8,15 +8,17 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     int currWave = 1;
-    int numOfZombieBeSpawned = 10;
+    int numOfZombieBeSpawned = 5;
     public int numOfZombieInScene { get; set; }
 
     [SerializeField] int spawnDelay;
-    [SerializeField] Transform spawnPoint;
+    [SerializeField] Transform[] spawnPoint;
     [SerializeField] GameObject zombiePrefab;
 
     [SerializeField] GameObject pressIToStart;
     [SerializeField] GameObject wave;
+
+    [SerializeField] GameObject planePrefab;
 
     bool isStart;
 
@@ -40,17 +42,17 @@ public class GameManager : MonoBehaviour
             WaveStart();
         }
         
-        if(numOfZombieInScene == 0)
+        if(numOfZombieInScene == 0 && isStart)
         {
             isStart = false;
             pressIToStart.SetActive(true);
+            DropBox();
         }
     }
 
     void WaveStart()
     {
         isStart = true;
-        numOfZombieInScene = numOfZombieBeSpawned;
 
         pressIToStart.SetActive(false);
         wave.SetActive(true);
@@ -59,14 +61,21 @@ public class GameManager : MonoBehaviour
         StartCoroutine(DeactiveWave());
 
         StartCoroutine(Spawn());
+
+        DropBox();
     }
 
     IEnumerator Spawn()
     {
-        for(int i = 0; i< numOfZombieBeSpawned; i++)
-        {
-            Instantiate(zombiePrefab, spawnPoint.position, Quaternion.identity);
+        int num = spawnPoint.Length < currWave ? spawnPoint.Length : currWave - 1;
+        numOfZombieInScene = numOfZombieBeSpawned * num;
 
+        for (int j = 0;  j < numOfZombieBeSpawned; j++)
+        {
+            for (int i = 0; i < num; i++)
+            {
+                Instantiate(zombiePrefab, spawnPoint[i].position, Quaternion.identity);
+            }
             yield return new WaitForSeconds(spawnDelay);
         }
     }
@@ -75,5 +84,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         wave.SetActive(false);
+    }
+
+    void DropBox()
+    {
+        Instantiate(planePrefab);
     }
 }
