@@ -8,7 +8,7 @@ public class Zombie : MonoBehaviour
 {
     [SerializeField] int maxHp;
     int currHp;
-    [SerializeField] Rigidbody playerRigid;
+    Rigidbody playerRigid;
 
     [SerializeField] float attackRange = 1.5f;
     [SerializeField] float attackDelay = 2f;
@@ -23,6 +23,8 @@ public class Zombie : MonoBehaviour
     Animator anim;
     Image hpBar;
     ParticleSystem particle;
+    CapsuleCollider bodyCol;
+    SphereCollider headCol;
     
 
     void Start()
@@ -31,6 +33,9 @@ public class Zombie : MonoBehaviour
         anim = GetComponent<Animator>();
         hpBar = GetComponentInChildren<Image>();
         particle = GetComponentInChildren<ParticleSystem>();
+        playerRigid = GameObject.Find("Player").GetComponent<Rigidbody>();
+        bodyCol = GetComponent<CapsuleCollider>();
+        headCol = GetComponentInChildren<SphereCollider>();
 
         anim.SetFloat("MoveSpeed", 1);
 
@@ -82,9 +87,16 @@ public class Zombie : MonoBehaviour
 
     void Die()
     {
+        bodyCol.enabled = false;
+        headCol.enabled = false;
+
         isDead = true;
         anim.SetTrigger("Dead");
         agent.destination = transform.position;
+
+        GameManager.instance.numOfZombieInScene--;
+
+        StartCoroutine(DestoryThis());
     }
 
     bool DetectPlayer()
@@ -112,5 +124,12 @@ public class Zombie : MonoBehaviour
         agent.speed = originSpeed;
         yield return new WaitForSeconds(attackDelay / 2);
         canAttack = true;
+    }
+
+    IEnumerator DestoryThis()
+    {
+        yield return new WaitForSeconds(5);
+
+        Destroy(gameObject);
     }
 }

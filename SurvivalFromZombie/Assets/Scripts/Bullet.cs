@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float power;
+    [SerializeField] int dmg;
 
     GameObject mainCamera;
     Rigidbody rigid;
@@ -48,12 +49,12 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {
             Debug.Log("머리에 맞았음");
-            collision.gameObject.GetComponentInParent<Zombie>().DecreaseHp(10);
+            collision.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg * 2);
         }
         else if(collision.gameObject.layer == 9)
         {
             Debug.Log("몸통에 맞았음");
-            collision.gameObject.GetComponent<Zombie>().DecreaseHp(5);
+            collision.gameObject.GetComponent<Zombie>().DecreaseHp(dmg);
         }
 
         gameObject.SetActive(false);
