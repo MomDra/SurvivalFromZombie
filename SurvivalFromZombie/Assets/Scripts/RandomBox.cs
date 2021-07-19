@@ -24,7 +24,7 @@ public class RandomBox : MonoBehaviour
     {
         if (collision.gameObject.layer == 7)
         {
-            // 체력 회복 코드
+            GameManager.instance.plyerHP = hp;
 
             gunController.IncreaseBullet(numOfBullet);
 

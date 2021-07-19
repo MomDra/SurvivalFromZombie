@@ -236,8 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0212cf78363b3274faae4c3b1720b413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentBulletCount: 5
-  bulletInBagCount: 300
+  currentBulletCount: 30
+  bulletInBagCount: 100
   fireTime: 0.15
   reloadTime: 2.1
   fireParticle: {fileID: 898891876}

@@ -53,7 +53,7 @@ public class Zombie : MonoBehaviour
 
             if (DetectPlayer() && canAttack)
             {
-                Attack();
+                StartCoroutine(Attack());
             }
         }
     }
@@ -111,21 +111,20 @@ public class Zombie : MonoBehaviour
         return false;
     }
 
-    void Attack()
+    IEnumerator Attack()
     {
         canAttack = false;
         agent.speed = 0;
-        StartCoroutine(ResetAttack());
         anim.SetTrigger("Attack");
 
-        GameManager.instance.plyerHP = attackDmg;
-    }
+        yield return new WaitForSeconds(attackDelay / 3);
 
-    IEnumerator ResetAttack()
-    {
-        yield return new WaitForSeconds(attackDelay / 2);
+        if(DetectPlayer()) GameManager.instance.plyerHP = -attackDmg;
+
+        yield return new WaitForSeconds(attackDelay / 3);
         agent.speed = originSpeed;
-        yield return new WaitForSeconds(attackDelay / 2);
+
+        yield return new WaitForSeconds(attackDelay / 3);
         canAttack = true;
     }
 }

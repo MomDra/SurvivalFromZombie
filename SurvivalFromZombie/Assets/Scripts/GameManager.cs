@@ -14,7 +14,13 @@ public class GameManager : MonoBehaviour
     int _playerHP = 100;
     public int plyerHP { 
         get { return _playerHP; } 
-        set { if (_playerHP > 0) _playerHP -= value; text_PlayerHP.text = _playerHP.ToString(); } 
+        set { if (value < 0 && _playerHP > 0) { _playerHP += value; }
+            else if(value > 0 && _playerHP < 100)
+            {
+                if (_playerHP + value > 100) _playerHP = 100;
+                else _playerHP += value;
+            }
+            text_PlayerHP.text = _playerHP.ToString(); } 
     }
     [SerializeField] Text text_PlayerHP;
 
