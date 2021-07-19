@@ -60,7 +60,7 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && !isloading && currentBulletCount != maxBulletCount)
+        if (Input.GetKeyDown(KeyCode.R) && !isloading && currentBulletCount != maxBulletCount && bulletInBagCount != 0)
         {
             Reload();
         }

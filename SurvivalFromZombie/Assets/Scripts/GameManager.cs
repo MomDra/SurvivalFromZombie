@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
     int numOfZombieBeSpawned = 5;
     public int numOfZombieInScene { get; set; }
 
+    int _playerHP = 100;
+    public int plyerHP { 
+        get { return _playerHP; } 
+        set { if (_playerHP > 0) _playerHP -= value; text_PlayerHP.text = _playerHP.ToString(); } 
+    }
+    [SerializeField] Text text_PlayerHP;
+
     [SerializeField] int spawnDelay;
     [SerializeField] Transform[] spawnPoint;
     [SerializeField] GameObject zombiePrefab;

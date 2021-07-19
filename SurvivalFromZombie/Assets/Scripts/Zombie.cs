@@ -12,6 +12,7 @@ public class Zombie : MonoBehaviour
 
     [SerializeField] float attackRange = 1.5f;
     [SerializeField] float attackDelay = 2f;
+    [SerializeField] int attackDmg = 10;
 
     float originSpeed;
     float slowSpeed = 1f;
@@ -96,7 +97,7 @@ public class Zombie : MonoBehaviour
 
         GameManager.instance.numOfZombieInScene--;
 
-        StartCoroutine(DestoryThis());
+        Destroy(gameObject, 5f);
     }
 
     bool DetectPlayer()
@@ -116,6 +117,8 @@ public class Zombie : MonoBehaviour
         agent.speed = 0;
         StartCoroutine(ResetAttack());
         anim.SetTrigger("Attack");
+
+        GameManager.instance.plyerHP = attackDmg;
     }
 
     IEnumerator ResetAttack()
@@ -124,12 +127,5 @@ public class Zombie : MonoBehaviour
         agent.speed = originSpeed;
         yield return new WaitForSeconds(attackDelay / 2);
         canAttack = true;
-    }
-
-    IEnumerator DestoryThis()
-    {
-        yield return new WaitForSeconds(5);
-
-        Destroy(gameObject);
     }
 }
