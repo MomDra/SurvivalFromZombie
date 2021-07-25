@@ -26,7 +26,6 @@ public class Zombie : MonoBehaviour
     ParticleSystem particle;
     CapsuleCollider bodyCol;
     SphereCollider headCol;
-    
 
     void Start()
     {
@@ -56,6 +55,11 @@ public class Zombie : MonoBehaviour
                 StartCoroutine(Attack());
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        hpBar.transform.LookAt(playerRigid.position);
     }
 
     public void DecreaseHp(int dmg)

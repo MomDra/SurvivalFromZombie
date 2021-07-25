@@ -28,8 +28,10 @@ public class GunController : MonoBehaviour
     [SerializeField] Text currentBullet;
     [SerializeField] Text maxBullet;
 
-    [SerializeField] GameObject mainCamera;
+    [SerializeField] Transform mainCamera;
     RaycastHit hit;
+
+    [SerializeField] CrossHair crossHair;
 
     private void Start()
     {
@@ -68,7 +70,7 @@ public class GunController : MonoBehaviour
             Reload();
         }
 
-        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * fireDistance, Color.blue);
+        Debug.DrawRay(mainCamera.position, mainCamera.forward * fireDistance, Color.blue);
     }
 
     void Fire()
@@ -82,17 +84,19 @@ public class GunController : MonoBehaviour
         fireParticle.Play();
         currentBulletCount--;
         
-        if(Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, fireDistance))
+        if(Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, fireDistance))
         {
             if(hit.transform.gameObject.layer == 8)
             {
                 Debug.Log("머리에 맞았음");
                 hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg * 2);
+                crossHair.HitHead();
             }
             else if(hit.transform.gameObject.layer == 9)
             {
                 Debug.Log("몸통에 맞았음");
                 hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg);
+                crossHair.HitBody();
             }
             
         }
