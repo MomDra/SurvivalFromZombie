@@ -10,7 +10,7 @@ public class Zombie : MonoBehaviour
     int currHp;
     Rigidbody playerRigid;
 
-    [SerializeField] float attackRange = 1.5f;
+    [SerializeField] float attackRange = 2f;
     [SerializeField] float attackDelay = 2f;
     [SerializeField] int attackDmg = 10;
 

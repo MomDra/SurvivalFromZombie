@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 레이케스트 방식으로 바꾸면서 사용하지 않는 클래스
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float power;

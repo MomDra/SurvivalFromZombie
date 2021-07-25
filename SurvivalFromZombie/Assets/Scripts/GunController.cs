@@ -9,10 +9,11 @@ public class GunController : MonoBehaviour
     [SerializeField] int bulletInBagCount = 300;
     int maxBulletCount = 30;
 
-    [SerializeField]
-    float fireTime;
-    [SerializeField]
-    float reloadTime;
+    [SerializeField] float fireTime;
+    [SerializeField] float reloadTime;
+
+    [SerializeField] float fireDistance;
+    [SerializeField] int dmg;
 
     float recoil = -0.07f;
 
@@ -26,7 +27,9 @@ public class GunController : MonoBehaviour
 
     [SerializeField] Text currentBullet;
     [SerializeField] Text maxBullet;
-    
+
+    [SerializeField] GameObject mainCamera;
+    RaycastHit hit;
 
     private void Start()
     {
@@ -64,18 +67,36 @@ public class GunController : MonoBehaviour
         {
             Reload();
         }
+
+        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * fireDistance, Color.blue);
     }
 
     void Fire()
     {
+        Debug.Log("발사!");
+
         isReady = false;
         audioSource.Play();
         StartCoroutine(FireReady());
         StartCoroutine(Recoil());
         fireParticle.Play();
         currentBulletCount--;
-        BulletManager.instance.Fire();
-        Debug.Log("발사!");
+        
+        if(Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, fireDistance))
+        {
+            if(hit.transform.gameObject.layer == 8)
+            {
+                Debug.Log("머리에 맞았음");
+                hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg * 2);
+            }
+            else if(hit.transform.gameObject.layer == 9)
+            {
+                Debug.Log("몸통에 맞았음");
+                hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg);
+            }
+            
+        }
+        //BulletManager.instance.Fire();
 
         playerController.Walk();
 
