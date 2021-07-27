@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
         pressIToStart.SetActive(false);
         wave.SetActive(true);
-        wave.GetComponent<Text>().text = "Wave" + currWave.ToString();
+        wave.GetComponent<Text>().text = "Wave " + currWave.ToString();
         currWave++;
         StartCoroutine(DeactiveWave());
 
