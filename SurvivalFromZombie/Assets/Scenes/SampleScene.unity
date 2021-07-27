@@ -242,6 +242,8 @@ MonoBehaviour:
   reloadTime: 2.1
   fireDistance: 500
   dmg: 20
+  upRecoil: 0.4
+  leftRightRecoil: 0.4
   fireParticle: {fileID: 898891876}
   playerController: {fileID: 226711836}
   currentBullet: {fileID: 308524966}

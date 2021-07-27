@@ -15,7 +15,9 @@ public class GunController : MonoBehaviour
     [SerializeField] float fireDistance;
     [SerializeField] int dmg;
 
-    float recoil = -0.07f;
+    float forwardBackRecoil = -0.07f;
+    [SerializeField] float upRecoil;
+    [SerializeField] float leftRightRecoil;
 
     bool isReady;
     bool isloading;
@@ -80,27 +82,27 @@ public class GunController : MonoBehaviour
         isReady = false;
         audioSource.Play();
         StartCoroutine(FireReady());
-        StartCoroutine(Recoil());
+        StartCoroutine(ForwardBackRecoil());
         fireParticle.Play();
         currentBulletCount--;
-        
-        if(Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, fireDistance))
+
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, fireDistance))
         {
-            if(hit.transform.gameObject.layer == 8)
+            if (hit.transform.gameObject.layer == 8)
             {
                 Debug.Log("머리에 맞았음");
                 hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg * 2);
                 crossHair.HitHead();
             }
-            else if(hit.transform.gameObject.layer == 9)
+            else if (hit.transform.gameObject.layer == 9)
             {
                 Debug.Log("몸통에 맞았음");
                 hit.transform.gameObject.GetComponentInParent<Zombie>().DecreaseHp(dmg);
                 crossHair.HitBody();
             }
-            
         }
-        //BulletManager.instance.Fire();
+
+        UpDownLeftRigtRecoil();
 
         playerController.Walk();
 
@@ -142,11 +144,11 @@ public class GunController : MonoBehaviour
         isloading = false;
     }
 
-    IEnumerator Recoil()
+    IEnumerator ForwardBackRecoil()
     {
         for (int i = 0; i < 30; i++)
         {
-            float k = Mathf.Lerp(transform.localPosition.z, recoil, 0.4f);
+            float k = Mathf.Lerp(transform.localPosition.z, forwardBackRecoil, 0.4f);
             yield return new WaitForEndOfFrame();
             transform.localPosition = new Vector3(0, 0, k);
         }
@@ -157,6 +159,20 @@ public class GunController : MonoBehaviour
             yield return new WaitForEndOfFrame();
             transform.localPosition = new Vector3(0, 0, k);
         }
+    }
+
+    void UpDownLeftRigtRecoil()
+    {
+        float random = Random.Range(-leftRightRecoil, leftRightRecoil);
+        Vector3 rotateVal = new Vector3(-upRecoil, random, 0);
+
+        if (mainCamera.rotation.eulerAngles.x >= 270 && mainCamera.rotation.eulerAngles.x <= 275)
+        {
+            rotateVal.x = 0;
+            Debug.Log("상하반동 불가");
+        }
+
+        mainCamera.Rotate(rotateVal);
     }
 
     public void IncreaseBullet(int num)
