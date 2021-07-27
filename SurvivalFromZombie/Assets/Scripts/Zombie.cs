@@ -118,7 +118,7 @@ public class Zombie : MonoBehaviour
     IEnumerator Attack()
     {
         canAttack = false;
-        agent.speed = 0;
+        agent.speed = originSpeed / 1.2f;
         anim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(attackDelay / 3);

@@ -16,7 +16,10 @@ public class RandomBox : MonoBehaviour
     {
         gunController = FindObjectOfType<GunController>();
         rigid = GetComponent<Rigidbody>();
+    }
 
+    private void Update()
+    {
         rigid.velocity = Vector3.down * 2;
     }
 
