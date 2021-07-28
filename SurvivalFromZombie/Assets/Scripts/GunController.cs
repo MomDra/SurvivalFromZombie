@@ -47,29 +47,32 @@ public class GunController : MonoBehaviour
     }
 
     private void Update()
-    { 
-        if (Input.GetButton("Fire1") && isReady && !isloading)
+    {
+        if (WeaponManager.isGun)
         {
-            if(currentBulletCount > 0)
+            if (Input.GetButton("Fire1") && isReady && !isloading)
             {
-                Fire();
-            }
-            else
-            {
-                if(bulletInBagCount > 0)
+                if (currentBulletCount > 0)
                 {
-                    Reload();
+                    Fire();
                 }
                 else
                 {
-                    Debug.Log("총알이 없습니다.");
+                    if (bulletInBagCount > 0)
+                    {
+                        Reload();
+                    }
+                    else
+                    {
+                        Debug.Log("총알이 없습니다.");
+                    }
                 }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.R) && !isloading && currentBulletCount != maxBulletCount && bulletInBagCount != 0)
-        {
-            Reload();
+            if (Input.GetKeyDown(KeyCode.R) && !isloading && currentBulletCount != maxBulletCount && bulletInBagCount != 0)
+            {
+                Reload();
+            }
         }
 
         Debug.DrawRay(mainCamera.position, mainCamera.forward * fireDistance, Color.blue);
@@ -133,14 +136,15 @@ public class GunController : MonoBehaviour
             currentBulletCount = bulletInBagCount;
             bulletInBagCount = 0;
         }
-
-        currentBullet.text = currentBulletCount.ToString();
-        maxBullet.text = bulletInBagCount.ToString();
     }
 
     IEnumerator ReloadReady()
     {
         yield return new WaitForSeconds(reloadTime);
+
+        currentBullet.text = currentBulletCount.ToString();
+        maxBullet.text = bulletInBagCount.ToString();
+
         isloading = false;
     }
 
@@ -179,5 +183,13 @@ public class GunController : MonoBehaviour
     {
         bulletInBagCount += num;
         maxBullet.text = bulletInBagCount.ToString();
+    }
+
+    public bool CanChange()
+    {
+        if (!isReady) return false;
+        if (isloading) return false;
+
+        return true;
     }
 }

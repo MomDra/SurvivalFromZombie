@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rigid;
     [SerializeField] Animator gunAnim;
+    [SerializeField] Animator armAnim;
 
     Vector3 lastPos;
 
@@ -72,6 +73,7 @@ public class PlayerController : MonoBehaviour
         isRunning = false;
         applySpeed = walkSpeed;
         gunAnim.SetBool("isRunning", isRunning);
+        armAnim.SetBool("isRunning", isRunning);
     }
 
     void Run()
@@ -79,6 +81,7 @@ public class PlayerController : MonoBehaviour
         isRunning = true;
         applySpeed = runSpeed;
         gunAnim.SetBool("isRunning", isRunning);
+        armAnim.SetBool("isRunning", isRunning);
     }
 
     void MoveCheck()
@@ -89,6 +92,7 @@ public class PlayerController : MonoBehaviour
             isWalking = true;
 
         gunAnim.SetBool("isWalking", isWalking);
+        armAnim.SetBool("isWalking", isWalking);
 
         lastPos = rigid.position;
     }
