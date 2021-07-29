@@ -127,3 +127,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 20
   numOfBullet: 50
+  numOfBarrel: 1
+  UITime: 2

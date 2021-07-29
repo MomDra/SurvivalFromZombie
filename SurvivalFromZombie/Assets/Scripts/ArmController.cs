@@ -111,4 +111,12 @@ public class ArmController : MonoBehaviour
     {
         barrelOnHand.SetActive(false);
     }
+
+    public void IncreaseBarrel(int num)
+    {
+        numOfBarrel += num;
+        textNumOfBarrel.text = numOfBarrel.ToString();
+
+        if (numOfBarrel > 0) barrelOnHand.SetActive(true);
+    }
 }
