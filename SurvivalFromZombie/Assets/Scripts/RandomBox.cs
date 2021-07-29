@@ -46,7 +46,7 @@ public class RandomBox : MonoBehaviour
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         rigid.velocity = Vector3.down * 2;
     }

@@ -19,6 +19,7 @@ public class Zombie : MonoBehaviour
 
     bool isDead;
     bool canAttack = true;
+    bool isRunToBarrel;
 
     NavMeshAgent agent;
     Animator anim;
@@ -26,6 +27,8 @@ public class Zombie : MonoBehaviour
     ParticleSystem particle;
     CapsuleCollider bodyCol;
     SphereCollider headCol;
+
+    Vector3 dest;
 
     void Start()
     {
@@ -47,10 +50,11 @@ public class Zombie : MonoBehaviour
     {
         if (!isDead)
         {
-            agent.destination = playerRigid.position;
+            if (!isRunToBarrel) agent.destination = playerRigid.position;
+            else agent.destination = dest;
 
 
-            if (DetectPlayer() && canAttack)
+            if (DetectPlayer() && canAttack && !isRunToBarrel)
             {
                 StartCoroutine(Attack());
             }
@@ -92,8 +96,9 @@ public class Zombie : MonoBehaviour
 
     void Die()
     {
-        bodyCol.enabled = false;
+        //bodyCol.enabled = false;
         headCol.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
 
         isDead = true;
         anim.SetTrigger("Dead");
@@ -130,5 +135,15 @@ public class Zombie : MonoBehaviour
 
         yield return new WaitForSeconds(attackDelay / 3);
         canAttack = true;
+    }
+
+    public void RunToBarrel(Vector3 pos)
+    {
+        if (!isRunToBarrel)
+        {
+            isRunToBarrel = true;
+            dest = pos;
+            agent.speed = originSpeed * 1.5f;
+        }
     }
 }

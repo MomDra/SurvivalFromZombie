@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
             }
             text_PlayerHP.text = _playerHP.ToString(); } 
     }
+
     [SerializeField] Text text_PlayerHP;
 
     [SerializeField] int spawnDelay;
