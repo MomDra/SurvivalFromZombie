@@ -31,6 +31,7 @@ public class GunController : MonoBehaviour
     [SerializeField] Text maxBullet;
 
     [SerializeField] Transform mainCamera;
+    [SerializeField] Transform changableHolder;
     RaycastHit hit;
 
     [SerializeField] CrossHair crossHair;
@@ -177,6 +178,7 @@ public class GunController : MonoBehaviour
         }
 
         mainCamera.Rotate(rotateVal);
+        changableHolder.Rotate(rotateVal);
     }
 
     public void IncreaseBullet(int num)

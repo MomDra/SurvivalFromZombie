@@ -5,17 +5,21 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     public static bool isGun;
-    public static bool isHand;
+    public static bool isArm;
 
     [SerializeField] Camera weaponCamera;
 
     [SerializeField] GameObject gun;
     [SerializeField] GameObject arm;
 
+    [SerializeField] GameObject bulletUI;
+    [SerializeField] GameObject barrelUI;
+
     Animator animGun;
     Animator animArm;
 
     GunController gunController;
+    ArmController armController;
 
     private void Start()
     {
@@ -25,15 +29,16 @@ public class WeaponManager : MonoBehaviour
         animArm = arm.GetComponent<Animator>();
 
         gunController = gun.GetComponent<GunController>();
+        armController = arm.GetComponent<ArmController>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !isGun && isHand)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !isGun && isArm && armController.CanChange())
         {
             StartCoroutine(GunIn());
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && !isHand && isGun && gunController.CanChange())
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && !isArm && isGun && gunController.CanChange())
         {
             StartCoroutine(ArmIn());
         }
@@ -42,11 +47,14 @@ public class WeaponManager : MonoBehaviour
     IEnumerator GunIn()
     {
         animArm.SetTrigger("Out");
-        isHand = false;
+        isArm = false;
 
         yield return new WaitForSeconds(0.3f);
 
         weaponCamera.cullingMask = 1 << LayerMask.NameToLayer("Gun");
+
+        bulletUI.SetActive(true);
+        barrelUI.SetActive(false);
         
         animGun.SetTrigger("In");
 
@@ -64,10 +72,13 @@ public class WeaponManager : MonoBehaviour
 
         weaponCamera.cullingMask = 1 << LayerMask.NameToLayer("Arm");
 
+        bulletUI.SetActive(false);
+        barrelUI.SetActive(true);
+
         animArm.SetTrigger("In");
 
         yield return new WaitForSeconds(0.3f);
 
-        isHand = true;
+        isArm = true;
     }
 }
