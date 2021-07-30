@@ -13,10 +13,19 @@ public class Barrel : MonoBehaviour
     [SerializeField] float waitTime;
     [SerializeField] int dmgToPlayer;
 
+    AudioSource audioSource;
+    [SerializeField] AudioClip timer;
+    [SerializeField] AudioClip explosion;
+
+    MeshRenderer render;
+
     bool isExplosion;
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        render = GetComponent<MeshRenderer>();
+
         transform.Find("Spot Light").gameObject.SetActive(true);
         StartCoroutine(Explosion());
     }
@@ -38,11 +47,19 @@ public class Barrel : MonoBehaviour
 
     IEnumerator Explosion()
     {
-        yield return new WaitForSeconds(waitTime);
+        for(int i = 0; i<5; i++)
+        {
+            yield return new WaitForSeconds(waitTime / 5);
 
+            audioSource.PlayOneShot(timer);
+        }
+        
         isExplosion = true;
 
-        yield return new WaitForFixedUpdate();
+        audioSource.volume = 1f;
+        audioSource.PlayOneShot(explosion);
+
+        yield return new WaitForSeconds(1f);
 
         target = Physics.OverlapSphere(transform.position, detectDistance, 1 << 9);
 
@@ -63,6 +80,7 @@ public class Barrel : MonoBehaviour
 
         Debug.Log("Barrel Æø¹ß!");
 
-        Destroy(gameObject);
+        render.enabled = false;
+        Destroy(gameObject, 2f);
     }
 }

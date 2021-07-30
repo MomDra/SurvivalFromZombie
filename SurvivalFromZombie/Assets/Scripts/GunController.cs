@@ -171,7 +171,7 @@ public class GunController : MonoBehaviour
         float random = Random.Range(-leftRightRecoil, leftRightRecoil);
         Vector3 rotateVal = new Vector3(-upRecoil, random, 0);
 
-        if (mainCamera.rotation.eulerAngles.x >= 270 && mainCamera.rotation.eulerAngles.x <= 275)
+        if (mainCamera.rotation.eulerAngles.x >= 269.5f && mainCamera.rotation.eulerAngles.x <= 280)
         {
             rotateVal.x = 0;
             Debug.Log("상하반동 불가");

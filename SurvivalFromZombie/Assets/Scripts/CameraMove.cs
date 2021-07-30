@@ -7,11 +7,15 @@ public class CameraMove : MonoBehaviour
     [SerializeField]
     float rotateSpeed;
     float mouseY;
+    float currentCameraRotationX;
 
     void Update()
     {
-        mouseY = Input.GetAxis("Mouse Y");
+        float _xRotation = Input.GetAxisRaw("Mouse Y");
+        float _cameraRotationX = _xRotation * rotateSpeed;
+        currentCameraRotationX -= _cameraRotationX;
+        currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -80f, 80f);
 
-        transform.eulerAngles -= new Vector3(mouseY, 0, 0);
+        transform.localEulerAngles = new Vector3(currentCameraRotationX, 0, 0);
     }
 }

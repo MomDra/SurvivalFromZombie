@@ -155,6 +155,17 @@ public class Zombie : MonoBehaviour
             isRunToBarrel = true;
             dest = pos;
             agent.speed = originSpeed * 1.5f;
+
+            if (isSuper) StartCoroutine(RetrackPlayer());
         }
     }
+
+    IEnumerator RetrackPlayer()
+    {
+        yield return new WaitForSeconds(2f);
+
+        agent.enabled = true;
+        isRunToBarrel = false;
+    }
+
 }
