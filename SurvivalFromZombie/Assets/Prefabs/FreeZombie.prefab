@@ -849,7 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
-  attackRange: 2
+  attackRange: 2.6
   attackDelay: 2
   attackDmg: 10
   isSuper: 0

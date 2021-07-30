@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
             if(random2 == 0)
             {
                 Instantiate(superZombiePrefab, spawnPoint[random1].position, Quaternion.identity);
+                numOfZombieInScene++;
             }
 
             yield return new WaitForSeconds(1f);
