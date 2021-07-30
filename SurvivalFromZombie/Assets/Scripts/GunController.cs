@@ -194,4 +194,9 @@ public class GunController : MonoBehaviour
 
         return true;
     }
+
+    public void IncreaseDmg(int num)
+    {
+        dmg += num;
+    }
 }

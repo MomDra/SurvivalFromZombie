@@ -572,8 +572,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9fb1835b082c0a54e90f8fee1335b69f, type: 2}
-  - {fileID: 2100000, guid: 505c715e0fdb50f4fb8e906ce5e8d288, type: 2}
+  - {fileID: 2100000, guid: b39b2dcb648f53446b0220fc0ccff09b, type: 2}
+  - {fileID: 2100000, guid: 5bf92b2e7f753d14991321176d7a430c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -741,7 +741,7 @@ GameObject:
   - component: {fileID: 8923049123897943925}
   - component: {fileID: 2955225990967194905}
   m_Layer: 9
-  m_Name: FreeZombie
+  m_Name: SuperZombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -824,7 +824,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.15
-  m_Speed: 8.3
+  m_Speed: 14
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200
@@ -852,7 +852,7 @@ MonoBehaviour:
   attackRange: 2
   attackDelay: 2
   attackDmg: 10
-  isSuper: 0
+  isSuper: 1
 --- !u!65 &2955225990967194905
 BoxCollider:
   m_ObjectHideFlags: 0

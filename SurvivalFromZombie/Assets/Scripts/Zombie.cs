@@ -13,6 +13,7 @@ public class Zombie : MonoBehaviour
     [SerializeField] float attackRange = 2f;
     [SerializeField] float attackDelay = 2f;
     [SerializeField] int attackDmg = 10;
+    [SerializeField] bool isSuper;
 
     float originSpeed;
     float slowSpeed = 1f;
@@ -27,6 +28,7 @@ public class Zombie : MonoBehaviour
     ParticleSystem particle;
     CapsuleCollider bodyCol;
     SphereCollider headCol;
+    BoxCollider boxCol;
 
     Vector3 dest;
 
@@ -39,11 +41,18 @@ public class Zombie : MonoBehaviour
         playerRigid = GameObject.Find("Player").GetComponent<Rigidbody>();
         bodyCol = GetComponent<CapsuleCollider>();
         headCol = GetComponentInChildren<SphereCollider>();
+        boxCol = GetComponent<BoxCollider>();
 
         anim.SetFloat("MoveSpeed", 1);
 
         originSpeed = agent.speed;
-        currHp = maxHp;
+        currHp = maxHp = GameManager.instance.zombieHp;
+
+        if (isSuper)
+        {
+            currHp = maxHp = GameManager.instance.zombieHp * 3;
+            attackDmg *= 3;
+        }
     }
 
     private void FixedUpdate()
@@ -96,8 +105,10 @@ public class Zombie : MonoBehaviour
 
     void Die()
     {
-        //bodyCol.enabled = false;
+        bodyCol.enabled = false;
         headCol.enabled = false;
+        boxCol.enabled = true;
+
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         isDead = true;

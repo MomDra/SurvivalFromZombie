@@ -50,7 +50,7 @@ public class Barrel : MonoBehaviour
         {
             target[i].GetComponent<NavMeshAgent>().enabled = false;
             target[i].GetComponent<Zombie>().GetComponent<Rigidbody>().AddExplosionForce(power, transform.position, detectDistance, upForce, ForceMode.Impulse);
-            target[i].GetComponent<Zombie>().DecreaseHp(100);
+            target[i].GetComponent<Zombie>().DecreaseHp(GameManager.instance.zombieHp);
         }
 
         GameObject player = GameObject.Find("Player");

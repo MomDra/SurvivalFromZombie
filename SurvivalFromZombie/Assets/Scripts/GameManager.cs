@@ -23,11 +23,14 @@ public class GameManager : MonoBehaviour
             text_PlayerHP.text = _playerHP.ToString(); } 
     }
 
+    public int zombieHp = 10;
+
     [SerializeField] Text text_PlayerHP;
 
     [SerializeField] int spawnDelay;
     [SerializeField] Transform[] spawnPoint;
     [SerializeField] GameObject zombiePrefab;
+    [SerializeField] GameObject superZombiePrefab;
 
     [SerializeField] GameObject pressIToStart;
     [SerializeField] GameObject wave;
@@ -82,20 +85,44 @@ public class GameManager : MonoBehaviour
 
         numOfZombieInScene = currWave * 5;
 
+        if (currWave % 5 == 0)
+        {
+            numOfZombieInScene += currWave / 5;
+            StartCoroutine(SpawnSuperZombie());
+        }
+
         DropBox();
     }
 
     IEnumerator Spawn()
     {
-        for(int i = 1; i <= 5 * currWave; i++)
+        for (int i = 1; i <= 5 * currWave; i++)
         {
-            int random = Random.Range(0, spawnPoint.Length);
-            Instantiate(zombiePrefab, spawnPoint[random].position, Quaternion.identity);
-            
+            int random1 = Random.Range(0, spawnPoint.Length);
+            Instantiate(zombiePrefab, spawnPoint[random1].position, Quaternion.identity);
+
+            int random2 = Random.Range(0, 20);
+            if(random2 == 0)
+            {
+                Instantiate(superZombiePrefab, spawnPoint[random1].position, Quaternion.identity);
+            }
+
             yield return new WaitForSeconds(1f);
         }
 
-        currWave++;
+        EndSpawn();
+    }
+
+    IEnumerator SpawnSuperZombie()
+    {
+        int num = currWave / 5;
+
+        for(int i = 1; i <= num;  i++)
+        {
+            int random = Random.Range(0, spawnPoint.Length);
+            Instantiate(superZombiePrefab, spawnPoint[random].position, Quaternion.identity);
+            yield return new WaitForSeconds(5f);
+        }
     }
 
     IEnumerator DeactiveWave()
@@ -107,5 +134,11 @@ public class GameManager : MonoBehaviour
     void DropBox()
     {
         Instantiate(planePrefab);
+    }
+
+    void EndSpawn()
+    {
+        currWave++;
+        zombieHp += 3;
     }
 }

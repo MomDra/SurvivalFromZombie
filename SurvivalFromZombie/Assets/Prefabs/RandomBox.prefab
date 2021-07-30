@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 20
-  numOfBullet: 50
+  numOfBullet: 100
   numOfBarrel: 1
+  gunDmg: 5
   UITime: 2

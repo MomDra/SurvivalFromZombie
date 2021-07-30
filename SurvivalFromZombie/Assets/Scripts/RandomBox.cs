@@ -7,12 +7,14 @@ public class RandomBox : MonoBehaviour
     [SerializeField] int hp;
     [SerializeField] int numOfBullet;
     [SerializeField] int numOfBarrel;
+    [SerializeField] int gunDmg;
 
     [SerializeField] float UITime;
 
     bool canHp;
     bool canBullet;
     bool canBarrel;
+    bool canDmg;
 
     GunController gunController;
     ArmController armController;
@@ -22,6 +24,7 @@ public class RandomBox : MonoBehaviour
     GameObject HpUI;
     GameObject bulletUI;
     GameObject barrelUI;
+    GameObject dmgUI;
 
     private void Start()
     {
@@ -34,6 +37,7 @@ public class RandomBox : MonoBehaviour
         HpUI = parentUI.transform.Find("GetHp").gameObject;
         bulletUI = parentUI.transform.Find("GetBullet").gameObject;
         barrelUI = parentUI.transform.Find("GetBarrel").gameObject;
+        dmgUI = parentUI.transform.Find("IncreaseDmg").gameObject;
 
         int random = Random.Range(0, 10);
         if (random > 3) canHp = true; // 60%
@@ -43,6 +47,9 @@ public class RandomBox : MonoBehaviour
 
         random = Random.Range(0, 10);
         if (random > 5) canBarrel = true; // 40%
+
+        random = Random.Range(0, 15);
+        if (random == 0) canDmg = true; // 6.66%
 
     }
 
@@ -83,6 +90,16 @@ public class RandomBox : MonoBehaviour
 
                 barrelUI.SetActive(true);
                 StartCoroutine(HideUI(barrelUI));
+            }
+
+            if (canDmg)
+            {
+                canDmg = false;
+
+                gunController.IncreaseDmg(gunDmg);
+
+                dmgUI.SetActive(true);
+                StartCoroutine(HideUI(dmgUI));
             }
 
             Destroy(gameObject, UITime + 0.2f);
