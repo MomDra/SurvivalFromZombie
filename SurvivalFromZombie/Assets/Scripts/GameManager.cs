@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     int currWave = 1;
-    int numOfZombieBeSpawned = 5;
+
     public int numOfZombieInScene { get; set; }
 
     int _playerHP = 100;
@@ -76,32 +76,31 @@ public class GameManager : MonoBehaviour
         pressIToStart.SetActive(false);
         wave.SetActive(true);
         wave.GetComponent<Text>().text = "Wave " + currWave.ToString();
-        currWave++;
+        
         StartCoroutine(DeactiveWave());
-
         StartCoroutine(Spawn());
+
+        numOfZombieInScene = currWave * 5;
 
         DropBox();
     }
 
     IEnumerator Spawn()
     {
-        int num = spawnPoint.Length < currWave ? spawnPoint.Length : currWave - 1;
-        numOfZombieInScene = numOfZombieBeSpawned * num;
-
-        for (int j = 0;  j < numOfZombieBeSpawned; j++)
+        for(int i = 1; i <= 5 * currWave; i++)
         {
-            for (int i = 0; i < num; i++)
-            {
-                Instantiate(zombiePrefab, spawnPoint[i].position, Quaternion.identity);
-            }
-            yield return new WaitForSeconds(spawnDelay);
+            int random = Random.Range(0, spawnPoint.Length);
+            Instantiate(zombiePrefab, spawnPoint[random].position, Quaternion.identity);
+            
+            yield return new WaitForSeconds(1f);
         }
+
+        currWave++;
     }
 
     IEnumerator DeactiveWave()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3f);
         wave.SetActive(false);
     }
 
