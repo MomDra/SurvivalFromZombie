@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,7 +38,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject planePrefab;
 
+    [SerializeField] Image endingImg;
+    [SerializeField] Text endingText;
+
     bool isStart;
+    public bool isEnd;
 
 
     private void Awake()
@@ -69,6 +74,11 @@ public class GameManager : MonoBehaviour
             isStart = false;
             pressIToStart.SetActive(true);
             DropBox();
+        }
+
+        if(_playerHP == 0)
+        {
+            StartCoroutine(StopGame());
         }
     }
 
@@ -140,5 +150,34 @@ public class GameManager : MonoBehaviour
     {
         currWave++;
         zombieHp += 3;
+    }
+
+    IEnumerator StopGame()
+    {
+        isEnd = true;
+        endingImg.transform.gameObject.SetActive(true);
+        endingText.transform.gameObject.SetActive(true);
+
+        Color endingImgColor = endingImg.color;
+        Color endingTextColor = endingText.color;
+        Color increaseColor = new Color(0, 0, 0, 0.01f);
+
+        for (int i = 0; i < 100; i++)
+        {
+            endingImgColor += increaseColor;
+            endingTextColor += increaseColor;
+
+            endingImg.color = endingImgColor;
+            endingText.color = endingTextColor;
+
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SceneManager.LoadScene(0);
     }
 }

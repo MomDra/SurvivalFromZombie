@@ -49,7 +49,7 @@ public class GunController : MonoBehaviour
 
     private void Update()
     {
-        if (WeaponManager.isGun)
+        if (WeaponManager.isGun && !GameManager.instance.isEnd)
         {
             if (Input.GetButton("Fire1") && isReady && !isloading)
             {

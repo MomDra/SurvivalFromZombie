@@ -40,7 +40,7 @@ public class ArmController : MonoBehaviour
 
     private void Update()
     {
-        if (WeaponManager.isArm)
+        if (WeaponManager.isArm && !GameManager.instance.isEnd)
         {
             if (isReady && numOfBarrel > 0) 
             {
